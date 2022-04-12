@@ -1,0 +1,4 @@
+env/
+/backend/app/core/settings.py
+.idea
+__pycache__/
