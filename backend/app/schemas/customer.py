@@ -5,12 +5,13 @@ from .order import Order
 
 class CustomerBase(BaseModel):
     name: str
-    email: str
+    email: EmailStr
     phone_number: int
 
 
 class CustomerCreate(CustomerBase):
     email: EmailStr
+    password: str
 
 
 class Customer(CustomerBase):
@@ -20,8 +21,8 @@ class Customer(CustomerBase):
         orm_mode = True
 
 
-class CustomerUpdate():
-    pass
+class CustomerUpdate(CustomerBase):
+    password: str
 
 
 

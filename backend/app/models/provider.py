@@ -8,4 +8,5 @@ class Provider(Base):
     name = Column(String)
     email = Column(String)
     phone_number = Column(BigInteger)
+    hashed_password = Column(String)
     offers = relationship("Offer", back_populates="provider")
