@@ -1,6 +1,6 @@
 from sqlalchemy import Integer, Column, String, ForeignKey
 from sqlalchemy.orm import relationship
-from ..db.base_class import Base
+from backend.app.db.base_class import Base
 
 
 class Order(Base):
@@ -10,4 +10,6 @@ class Order(Base):
     materials = Column(String)
     quantity = Column(Integer)
     customer_id = Column(Integer, ForeignKey("customers.customer_id"))
-    owner = relationship("Customer", back_populates="orders")
+    customer = relationship("Customer", back_populates="orders")
+    offers = relationship("Offer", back_populates="order")
+

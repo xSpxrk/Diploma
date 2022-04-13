@@ -14,3 +14,10 @@ class Order(OrderBase):
     class Config:
         orm_mode = True
 
+
+class OrderCreate(OrderBase):
+    pass
+
+
+class OrderUpdate(OrderBase):
+    pass

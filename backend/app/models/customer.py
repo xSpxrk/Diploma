@@ -10,4 +10,4 @@ class Customer(Base):
     name = Column(String)
     email = Column(String)
     phone_number = Column(BigInteger)
-    orders = relationship("Order", back_populates="owner")
+    orders = relationship("Order", back_populates="customer")
