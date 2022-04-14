@@ -36,3 +36,21 @@ def create_customer(
 ) -> Any:
     user = crud.customer.create(db, user_in)
     return user
+
+
+@router.put("/{customer_id}", response_model=schemas.Customer)
+def update_customer(
+        *,
+        db: Session = Depends(deps.get_db),
+        customer_id: int,
+        customer_in: schemas.CustomerUpdate,
+) -> Any:
+    customer = crud.customer.get(db, customer_id)
+    if not customer:
+        raise HTTPException(
+            status_code=404,
+            detail="The customer with this id doesnt exist"
+        )
+    customer = crud.customer.update(db, db_obj=customer, obj_in=customer_in)
+    return customer
+

@@ -9,8 +9,8 @@ from backend.app.schemas.customer import CustomerCreate, CustomerUpdate
 
 class CRUDCustomer(CRUDBase[Customer, CustomerCreate, CustomerUpdate]):
 
-    def get(self, db: Session, id: id) -> Optional[Customer]:
-        return db.query(self.model).filter(self.model.customer_id == id).first()
+    def get(self, db: Session, customer_id: int) -> Optional[Customer]:
+        return db.query(self.model).filter(self.model.customer_id == customer_id).first()
 
     def create(
             self,
@@ -28,8 +28,21 @@ class CRUDCustomer(CRUDBase[Customer, CustomerCreate, CustomerUpdate]):
         db.refresh(new_customer)
         return new_customer
 
+    def update(
+            self,
+            db: Session,
+            db_obj: Customer,
+            obj_in: Union[CustomerUpdate, Dict[str, Any]]
+    ) -> Customer:
+        if isinstance(obj_in, dict):
+            updated_data = obj_in
+        else:
+            updated_data = obj_in.dict(exclude_unset=True)
+        if updated_data["password"]:
+            hashed_password = hash_password(updated_data["password"])
+            del updated_data["password"]
+            updated_data["hashed_password"] = hashed_password
+        return super().update(db, db_obj=db_obj, obj_in=updated_data)
+
 
 customer = CRUDCustomer(Customer)
-
-
-
