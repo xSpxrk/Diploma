@@ -1,4 +1,6 @@
 from pydantic import BaseModel
+from .offer import Offer as offer
+from typing import List
 
 
 class OrderBase(BaseModel):
@@ -10,6 +12,8 @@ class OrderBase(BaseModel):
 
 class Order(OrderBase):
     order_id: int
+    offers: List[offer]
+    customer_id: int
 
     class Config:
         orm_mode = True
