@@ -12,3 +12,6 @@ class Customer(Base):
     phone_number = Column(BigInteger)
     hashed_password = Column(String)
     orders = relationship("Order", back_populates="customer")
+
+    def __repr__(self):
+        return self.name

@@ -13,3 +13,5 @@ class Order(Base):
     customer = relationship("Customer", back_populates="orders")
     offers = relationship("Offer", back_populates="order")
 
+    def __repr__(self):
+        return self.name
