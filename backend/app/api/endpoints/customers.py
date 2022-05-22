@@ -1,5 +1,5 @@
 from typing import Any, List
-
+from fastapi.security import OAuth2PasswordBearer
 from fastapi import APIRouter, Body, Depends, HTTPException
 from fastapi.encoders import jsonable_encoder
 from pydantic.networks import EmailStr
@@ -10,8 +10,10 @@ from backend.app import crud
 
 router = APIRouter()
 
+oauth2_scheme = OAuth2PasswordBearer(tokenUrl="token")
 
-@router.get("/", response_model=List[schemas.Customer])
+
+@router.get("/", response_model=List[schemas.Customer], )
 def read_customers(
         db: Session = Depends(deps.get_db)
 ):
@@ -22,7 +24,8 @@ def read_customers(
 @router.get('/{customer_id}', response_model=schemas.Customer)
 def read_customer(
         customer_id: int,
-        db: Session = Depends(deps.get_db)
+        db: Session = Depends(deps.get_db),
+        token: str = Depends(oauth2_scheme)
 ):
     customer = crud.customer.get(db, customer_id)
     return customer

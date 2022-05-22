@@ -1,5 +1,5 @@
 from pydantic import BaseModel, EmailStr
-from typing import List
+from typing import List, Optional
 
 
 class ProviderBase(BaseModel):
@@ -16,8 +16,8 @@ class Provider(ProviderBase):
 
 
 class ProviderCreate(ProviderBase):
-    pass
+    password: str
 
 
 class ProviderUpdate(ProviderBase):
-    pass
+    password: Optional[str] = None
