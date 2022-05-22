@@ -8,7 +8,7 @@ class OfferBase(BaseModel):
     quantity: int
     price: Decimal
     order_id: int
-    provider_id: int
+    provider_id: Optional[int] = None
 
 
 class Offer(OfferBase):
