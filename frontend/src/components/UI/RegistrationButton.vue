@@ -15,6 +15,7 @@
     padding: 10px 15px;
     border: 1px solid #5cb25d;
     border-radius: 12px;
+    background-color: #faf6ed;
     transition-duration: 0.5s;
 
 }
