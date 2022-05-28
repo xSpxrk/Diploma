@@ -29,8 +29,6 @@
 }
 .app {
   background-color: #faf6ed;
-  margin: 0;
-  padding: 0;
 
 }
 

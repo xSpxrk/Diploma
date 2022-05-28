@@ -3,11 +3,11 @@
         <div class="items">
             <h1 class="icon">БСМ</h1>
             <div class="navbar__btns">
-                <a class="nav__link">О нас</a>
-                <a class="nav__link">Для кого</a>
-                <a class="nav__link">Поставщикам</a>
-                <a class="nav__link">Заказчикам</a>
-                <a class="nav__link">Вход</a>
+                <a class="nav__link" href="#about">О нас</a>
+                <a class="nav__link" href="#service">Для кого</a>
+                <a class="nav__link" href="#customers">Заказчикам</a>
+                <a class="nav__link" href="#providers">Поставщикам</a>
+                <a class="nav__link" @click="openEntry">Вход</a>
                 <registration-button @click="openRegistration">Регистрация</registration-button>
             </div>
         </div>
@@ -20,7 +20,10 @@
     export default {
         methods: {
             openRegistration() {
-                this.$emit('create', true)
+                this.$emit('registration', true)
+            },
+            openEntry() {
+                this.$emit('entry', true)
             }
         },
     }
@@ -56,10 +59,15 @@
     color: black;
 }
 .nav__link {
+    text-decoration: none;
     margin-right: 15px;
     cursor: default;
     transition-duration: 0.2s;
 }
+.nav__link:visited {
+    color: black;
+}
+
 .nav__link:hover {
     color: #5cb25d;
 }

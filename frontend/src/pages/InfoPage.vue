@@ -1,8 +1,14 @@
 <template>
     <div class="info">
         <div class="main__block">
-        <navbar></navbar>
-        <div class="about">
+        <navbar @entry="openEntry" @registration="openRegistration"></navbar>
+        <dialog-window v-model:show="enterVisible">
+          <enter-dialog></enter-dialog>
+        </dialog-window>
+        <dialog-window v-model:show="registrationVisible">
+          <registration-dialog></registration-dialog>
+        </dialog-window>
+        <div class="about" id="about">
             <div class="about__background">
                 <div class="about__inner">
                     <div class="about__image"/>
@@ -20,40 +26,84 @@
             </div>
         
         </div>
-        <div class="service">
+        <div class="service" id="service">
             <div class="service__title">
                 Для кого сервис?
             </div>
             <div class="service__item">
               <div class="service_item__customers">
-                <div class="service_item__title">
-                  Для заказчиков стройматериалов
-                </div>
-                <div class="service_item__subtitle">
-                  Строительные компании, стройбазы, магазины стройматериалов, дорожно-ремонтные компании
-                </div>
-                <div class="service_item__button">
-                  <div class="service_item_button__text">Узнать подробнее</div>
-                  <div class="service_item_button__arrow">➜</div>
-                </div>
+                <div class="service_item__content">
+                  <div class="service_item_content__title">
+                    Для заказчиков стройматериалов
+                  </div>
+                  <div class="service_item_content__subtitle">
+                    Строительные компании, стройбазы, магазины стройматериалов, дорожно-ремонтные компании
+                  </div>
+                  <a class="service_item_content__button" href="#customers">
+                      <div class="service_item_content_button__text">Узнать подробнее</div>
+                      <div class="service_item_content_button__arrow">➜</div>
+                    </a>
               </div>
+                </div>
+                
               <div class="service_item__providers">
-                <div class="service_item__title">
-                  Для поставщиков стройматериалов
+                <div class="service_item__content">
+                    <div class="service_item_content__title">
+                      Для поставщиков стройматериалов
+                    </div>
+                    <div class="service_item_content__subtitle">
+                      Производители металлочерепицы, профнастила, фанеры, ОСБ-плит и т.п.
+                    </div>
+                    <a class="service_item_content__button" href="#providers">
+                      <div class="service_item_content_button__text">Узнать подробнее</div>
+                      <div class="service_item_content_button__arrow">➜</div>
+                    </a>
                 </div>
-                <div class="service_item__subtitle">
-                  Производители металлочерепицы, профнастила, фанеры, ОСБ-плит и т.п.
-                </div>
-                <div class="service_item__button">
-                  <div class="service_item_button__text">Узнать подробнее</div>
-                  <div class="service_item_button__arrow">➜</div>
-                </div>
+                
               </div>
             </div>
           </div>
         <div class="advantages">
-          <div class="advantages_inner"></div>
-          <div class="advantages_inner"></div>
+          <div class="advantages__inner" id="customers">
+            <div class="advantages_inner__title">Заказчикам</div>
+            <div class="advantages_inner__element">
+              <div class="advantages_inner_element__content">
+                <img class="advantages_inner_element_content__icon" src="@/resources/images/leather_customers.svg"/>
+                <div class="advantages_inner_element_content__title">Просто</div>
+                <div class="advantages_inner_element_content__subtitle">Легкий способ найти нужного поставщика!</div>
+              </div>
+               <div class="advantages_inner_element__content">
+                <img class="advantages_inner_element_content__icon" src="@/resources/images/price.svg"/>
+                <div class="advantages_inner_element_content__title">Лучшие цены</div>
+                <div class="advantages_inner_element_content__subtitle">За вашу заявку борятся десятки поставщиков, обеспечив минимальную цену!</div>
+              </div>
+               <div class="advantages_inner_element__content">
+                <img class="advantages_inner_element_content__icon" src="@/resources/images/star.svg"/>
+                <div class="advantages_inner_element_content__title">Лучшие партнеры</div>
+                <div class="advantages_inner_element_content__subtitle">Рейтинг поставщика - выбирайте надежного партнера!</div>
+              </div>
+            </div>
+          </div>
+          <div class="advantages__inner" id="providers">
+            <div class="advantages_inner__element">
+              <div class="advantages_inner_element__content">
+                <img class="advantages_inner_element_content__icon" src="@/resources/images/leather_providers.svg"/>
+                <div class="advantages_inner_element_content__title">Просто</div>
+                <div class="advantages_inner_element_content__subtitle">Легкий способ предложить свой товар заказчикам</div>
+              </div>
+               <div class="advantages_inner_element__content">
+                <img class="advantages_inner_element_content__icon" src="@/resources/images/contacts.svg"/>
+                <div class="advantages_inner_element_content__title">База заказчиков</div>
+                <div class="advantages_inner_element_content__subtitle">Тысяча заказчиков вашей продукции</div>
+              </div>
+               <div class="advantages_inner_element__content">
+                <img class="advantages_inner_element_content__icon" src="@/resources/images/clock.svg"/>
+                <div class="advantages_inner_element_content__title">Работа в любое время</div>
+                <div class="advantages_inner_element_content__subtitle">Работа с заявками в любомй момент</div>
+              </div>
+            </div>
+            <div class="advantages_inner__title">Поставщикам</div>
+          </div>
         </div>
         <div class="footer">
           <div class="footer__title">БСМ</div>
@@ -66,10 +116,28 @@
 
 <script>
 import Navbar from "@/components/InfoNavBar.vue"
+import EnterDialog from '@/components/UI/EnterDialog.vue'
+import RegistrationDialog from '@/components/UI/RegistrationDialog.vue'
     export default {
         components: {
             Navbar,
-        }
+              EnterDialog,
+              RegistrationDialog
+        },
+        data() {
+          return {
+            enterVisible: false,
+            registrationVisible: false,
+          }
+        },
+        methods: {
+          openEntry(show){
+            this.enterVisible = show;
+          },
+          openRegistration(show){
+            this.registrationVisible = show;
+          }
+        },
     }
 </script>
 
@@ -157,8 +225,21 @@ import Navbar from "@/components/InfoNavBar.vue"
   background: #458686;
 }
 .service {
+  cursor: default;
   width: 1440px;
   margin: 100px auto;
+}
+.service_item__customers {
+  transition-duration: 0.5s;
+}
+.service_item__customers:hover {
+  transform: translate(0, -10px);
+}
+.service_item__providers {
+  transition-duration: 0.5s;
+}
+.service_item__providers:hover {
+  transform: translate(0, -10px);
 }
 .service__title {
   text-align: center;
@@ -172,7 +253,7 @@ import Navbar from "@/components/InfoNavBar.vue"
 
 color: #3F4155;
 }
-.service_item__title {
+.service_item_content__title {
   font-family: 'Inter';
   font-style: normal;
   font-weight: 400;
@@ -195,6 +276,9 @@ color: #3F4155;
   border-radius: 20px;
   padding: 30px 25px;
 }
+.service_item__content {
+  width: 63%;
+}
 .service_item__providers {
   width: 490px;
   height: 280px;
@@ -202,19 +286,84 @@ color: #3F4155;
   border-radius: 20px;
   padding: 30px 25px;
 }
-.service_item__button {
+.service_item_content__subtitle {
+  height: 83px;
+  margin: 21px 0 0 0;
+  font-family: 'Inter';
+  font-style: normal;
+  font-weight: 400;
+  font-size: 18px;
+  line-height: 22px;
+
+  color: #FAF6ED;
+}
+.service_item_content__button {
+  text-decoration: none;
+  color: #FAF6ED;
+  margin: 36px 0 0 0;
   display: flex;
   
+}
+.service_item_content__button:visited {
+    color: #FAF6ED;
 }
 .advantages {
   display: block;
   height: 1000px;
   background: url("@/resources/images/info_triangles.svg") no-repeat;
 }
-.advantages_inner{
+.advantages__inner{
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  padding: 0 20px;
   width: 1440px;
   margin: 0 auto;
   height: 500px;
+}
+.advantages_inner__title {
+  width: 25%;
+  align-self: center;
+  font-family: 'Inter';
+  font-style: normal;
+  font-weight: 400;
+  font-size: 55px;
+  line-height: 67px;
+  text-align: left;
+  color: #FAF6ED;
+}
+.advantages_inner__element {
+  width: 75%;
+  margin: 40px 0 0 0;
+  display: flex;
+  justify-content: space-between;
+
+}
+.advantages_inner_element__content {
+  width: 30%;
+}
+.advantages_inner_element_content__icon {
+  height: 93px;
+  width: 100px;
+}
+.advantages_inner_element_content__title {
+  font-family: 'Inter';
+  font-style: normal;
+  font-weight: 400;
+  font-size: 40px;
+  line-height: 48px;
+
+  color: #FAF6ED;
+}
+.advantages_inner_element_content__subtitle {
+  margin: 10px 0 0 0;
+  font-family: 'Inter';
+  font-style: normal;
+  font-weight: 400;
+  font-size: 30px;
+  line-height: 36px;
+
+  color: #FAF6ED;
 }
 .footer {
   width: 1440px;
@@ -227,7 +376,6 @@ color: #3F4155;
   font-style: normal;
   font-weight: 400;
   font-size: 100px;
-  line-height: 121px;
 
   color: #5CB25D;
 }

@@ -1,13 +1,10 @@
 <template>
-    <div class="registration">
-        <h1 class="header">Начните работать с нами</h1>
-        <input-item placeholder="Наименование"/>
+    <div class="entry">
+        <h1 class="header">Авторизация</h1>
         <input-item placeholder="Почта"/>
-        <input-item placeholder="Номер телефона"/>
         <input-item placeholder="Пароль" type="password"/>
-        <input-item placeholder="Повтор пароля" type="password"/>
         <div class="button">
-            <button-dialog class="btn">Начать работу</button-dialog>
+            <button-dialog class="btn">Вход</button-dialog>
         </div>
 
 
@@ -23,8 +20,8 @@ import InputItem from './InputItem.vue'
 </script>
 
 <style scoped>
-.registration {
-    padding: 32px 230px;
+.entry {
+    padding: 32px 100px;
 }
 .header {
     text-align: center;
@@ -43,6 +40,6 @@ import InputItem from './InputItem.vue'
     justify-content: end;
 }
 .btn {
-    padding: 8px 40px;
+   padding: 8px 100px; 
 }
 </style>

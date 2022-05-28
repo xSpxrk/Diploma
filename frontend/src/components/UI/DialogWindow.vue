@@ -32,14 +32,15 @@
     background: rgba(0, 0, 0, 0.5);
     position: fixed;
     display: flex;
+    
 }
 
 .dialog__content {
     margin: auto;
     background: white;
-    border-radius: 12px;
+    border-radius: 70px;
     min-height: 50px;
-    min-width: 300px;
-    padding: 20px;
+    min-width: 720px;
+    max-width: 1000px;
 }
 </style>
