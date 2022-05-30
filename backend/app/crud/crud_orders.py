@@ -2,11 +2,19 @@ from .base import CRUDBase
 from backend.app.models import Order
 from sqlalchemy.orm import Session
 from fastapi.encoders import jsonable_encoder
-from typing import Optional
+from typing import Optional, List
 from backend.app.schemas.order import OrderCreate, OrderUpdate
 
 
 class CRUDOrder(CRUDBase[Order, OrderCreate, OrderUpdate]):
+    def get_multi(
+            self,
+            db: Session,
+            skip: int = 0,
+            limit: int = 3
+
+    ) -> List[Order]:
+        return db.query(self.model).offset(skip).limit(limit).all()
 
     def get(self, db: Session, order_id: int) -> Optional[Order]:
         return db.query(self.model).filter(self.model.order_id == order_id).first()

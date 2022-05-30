@@ -1,6 +1,6 @@
 from typing import Any, List
 from fastapi.security import OAuth2PasswordBearer
-from fastapi import APIRouter, Body, Depends, HTTPException
+from fastapi import APIRouter, Body, Depends, HTTPException, Request
 from fastapi.encoders import jsonable_encoder
 from pydantic.networks import EmailStr
 from sqlalchemy.orm import Session
@@ -14,8 +14,11 @@ router = APIRouter()
 
 @router.get("/", response_model=List[schemas.Offer])
 def read_offers(
+        request: Request,
         db: Session = Depends(deps.get_db)
 ):
+    # token = request.headers.get('Authorization')
+    # current_user = deps.get_current_user(db, token=token)
     offers = crud.offer.get_multi(db)
     return offers
 
@@ -34,9 +37,10 @@ def create_offer(
         *,
         db: Session = Depends(deps.get_db),
         offer_in: schemas.OfferCreate,
-        user: Provider = Depends(deps.get_current_user)
+        token: str
 ):
-    offer_in.provider_id = user.provider_id
+    provider = deps.get_current_user(db, token)
+    offer_in.provider_id = provider.provider_id
     offer = crud.offer.create(db, offer_in)
     return offer
 
@@ -55,4 +59,14 @@ def update_offer(
             detail="The offer with this id doesnt exist"
         )
     offer = crud.offer.update(db, db_obj=offer, obj_in=offer_in)
+    return offer
+
+
+@router.delete('/{offer_id}')
+def delete_offer(
+        *,
+        db: Session = Depends(deps.get_db),
+        offer_id: int
+):
+    offer = crud.offer.remove(db, offer_id)
     return offer

@@ -1,5 +1,5 @@
 from typing import List, Any
-from fastapi import APIRouter, Depends
+from fastapi import APIRouter, Depends, Request, HTTPException
 from sqlalchemy.orm import Session
 from backend.app.api import deps
 from backend.app import schemas
@@ -14,6 +14,17 @@ def read_providers(
 ):
     providers = crud.provider.get_multi(db)
     return providers
+
+
+@router.get('/one', response_model=schemas.Provider)
+def read_customer(
+        request: Request,
+        db: Session = Depends(deps.get_db),
+):
+    token = request.headers.get('Authorization')
+    current_user = deps.get_current_user(db, token=token)
+    provider = crud.provider.get_by_email(db, current_user.email)
+    return provider
 
 
 @router.get("/{provider_id}", response_model=schemas.Provider)
@@ -31,5 +42,11 @@ def create_customer(
         db: Session = Depends(deps.get_db),
         user_in: schemas.ProviderCreate
 ) -> Any:
+    user = crud.provider.get_by_email(db, user_in.email)
+    if user:
+        raise HTTPException(
+            status_code=400,
+            detail='The provider exists already'
+        )
     user = crud.provider.create(db, user_in)
     return user

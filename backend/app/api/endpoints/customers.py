@@ -1,6 +1,6 @@
 from typing import Any, List
 from fastapi.security import OAuth2PasswordBearer
-from fastapi import APIRouter, Body, Depends, HTTPException
+from fastapi import APIRouter, Body, Depends, HTTPException, Request
 from fastapi.encoders import jsonable_encoder
 from pydantic.networks import EmailStr
 from sqlalchemy.orm import Session
@@ -9,8 +9,6 @@ from backend.app import models, schemas
 from backend.app import crud
 
 router = APIRouter()
-
-oauth2_scheme = OAuth2PasswordBearer(tokenUrl="token")
 
 
 @router.get("/", response_model=List[schemas.Customer], )
@@ -21,11 +19,21 @@ def read_customers(
     return customers
 
 
+@router.get('/one', response_model=schemas.Customer)
+def read_customer(
+        request: Request,
+        db: Session = Depends(deps.get_db),
+):
+    token = request.headers.get('Authorization')
+    current_user = deps.get_current_user(db, token=token)
+    customer = crud.customer.get_by_email(db, current_user.email)
+    return customer
+
+
 @router.get('/{customer_id}', response_model=schemas.Customer)
 def read_customer(
         customer_id: int,
         db: Session = Depends(deps.get_db),
-        token: str = Depends(oauth2_scheme)
 ):
     customer = crud.customer.get(db, customer_id)
     return customer
@@ -37,6 +45,12 @@ def create_customer(
         db: Session = Depends(deps.get_db),
         user_in: schemas.CustomerCreate
 ) -> Any:
+    user = crud.customer.get_by_email(db, user_in.email)
+    if user:
+        raise HTTPException(
+            status_code=400,
+            detail='The customer exists already'
+        )
     user = crud.customer.create(db, user_in)
     return user
 
@@ -51,9 +65,8 @@ def update_customer(
     customer = crud.customer.get(db, customer_id)
     if not customer:
         raise HTTPException(
-            status_code=404,
+            status_code=400,
             detail="The customer with this id doesnt exist"
         )
     customer = crud.customer.update(db, db_obj=customer, obj_in=customer_in)
     return customer
-

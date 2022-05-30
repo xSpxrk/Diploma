@@ -14,12 +14,14 @@ router = APIRouter()
 
 @router.post("/token", response_model=schemas.Token)
 def login_access_token(
-        db: Session = Depends(deps.get_db), form_data: OAuth2PasswordRequestForm = Depends()
+        *,
+        db: Session = Depends(deps.get_db),
+        login: schemas.Login
 ) -> Any:
-    user = crud.customer.authenticate(db, email=form_data.username, password=form_data.password)
+    user = crud.customer.authenticate(db, email=login.username, password=login.password)
     type = "customer"
     if not user:
-        user = crud.provider.authenticate(db, email=form_data.username, password=form_data.password)
+        user = crud.provider.authenticate(db, email=login.username, password=login.password)
         type = "provider"
         if not user:
             raise HTTPException(status_code=400, detail="Incorrect email or password")
@@ -29,5 +31,6 @@ def login_access_token(
             type,
             expires_delta=None
         ),
-        "token_type": "bearer"
+        "token_type": "bearer",
+        "type": type
     }

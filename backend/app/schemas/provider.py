@@ -1,5 +1,6 @@
 from pydantic import BaseModel, EmailStr
 from typing import List, Optional
+from .offer import Offer
 
 
 class ProviderBase(BaseModel):
@@ -10,6 +11,7 @@ class ProviderBase(BaseModel):
 
 class Provider(ProviderBase):
     provider_id: int
+    offers: List[Offer] = []
 
     class Config:
         orm_mode = True

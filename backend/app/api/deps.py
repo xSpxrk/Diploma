@@ -36,7 +36,6 @@ def get_current_user(
             status_code=status.HTTP_403_FORBIDDEN,
             detail="Could not validate credentials"
         )
-    print(token_data)
     if token_data.type == "customer":
         user = crud.customer.get(db, customer_id=token_data.sub)
     else:

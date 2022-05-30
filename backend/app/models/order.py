@@ -11,7 +11,7 @@ class Order(Base):
     quantity = Column(Integer)
     customer_id = Column(Integer, ForeignKey("customers.customer_id"))
     customer = relationship("Customer", back_populates="orders")
-    offers = relationship("Offer", back_populates="order")
+    offers = relationship("Offer", back_populates="order", cascade='all, delete')
 
     def __repr__(self):
         return self.name
