@@ -3,10 +3,10 @@
         <div class="main__block">
         <navbar @entry="openEntry" @registration="openRegistration"></navbar>
         <dialog-window v-model:show="enterVisible">
-          <enter-dialog></enter-dialog>
+          <enter-dialog @login="loginUser"></enter-dialog>
         </dialog-window>
         <dialog-window v-model:show="registrationVisible">
-          <registration-dialog></registration-dialog>
+          <registration-dialog @register="registerUser"></registration-dialog>
         </dialog-window>
         <div class="about" id="about">
             <div class="about__background">
@@ -18,7 +18,7 @@
                     <div class="about__content">
                         <div class="about__content_information">Мы организуем систему взаимодействия покупателей и производителей материалов</div>
                         <div class="about__content_btns">
-                            <button class="about__content_btn">Узнать подробнее</button>
+                            <button class="about__content_btn" @click="openRegistration" >Зарегестрироваться в системе</button>
                         </div>
 
                     </div>
@@ -116,8 +116,9 @@
 
 <script>
 import Navbar from "@/components/InfoNavBar.vue"
-import EnterDialog from '@/components/UI/EnterDialog.vue'
-import RegistrationDialog from '@/components/UI/RegistrationDialog.vue'
+import EnterDialog from '@/components/EnterDialog.vue'
+import RegistrationDialog from '@/components/RegistrationDialog.vue'
+import axios from 'axios'
     export default {
         components: {
             Navbar,
@@ -128,6 +129,7 @@ import RegistrationDialog from '@/components/UI/RegistrationDialog.vue'
           return {
             enterVisible: false,
             registrationVisible: false,
+            token: ''
           }
         },
         methods: {
@@ -136,19 +138,79 @@ import RegistrationDialog from '@/components/UI/RegistrationDialog.vue'
           },
           openRegistration(show){
             this.registrationVisible = show;
+          },
+        
+          async loginUser(user) {
+            try {
+              const response = await axios.post('http://127.0.0.1:8000/token',
+                {  
+                username: user.username,
+                password: user.password,
+                }
+              );
+              console.log(response.data)
+              localStorage.token = response.data.access_token
+              localStorage.type = response.data.type
+              this.$router.push('/main')
+            } catch(error) {
+              console.log(error);
+              alert(error.response.data.detail)
+            }
+          },
+          async registerUser(user) {
+            if (user.type == 'Заказчик') {
+              try{
+                const response = await axios.post('http://127.0.0.1:8000/customers', {
+                name: user.name,
+                email: user.email,
+                phone_number: user.phone,
+                password: user.password
+              })
+              if (response){
+                alert('Успешная регистрация')
+              }
+              } catch (error){
+                alert(error.response.data.detail)
+              }
+              
+            }
+            else {
+              try{
+                const response = await axios.post('http://127.0.0.1:8000/providers', {
+                name: user.name,
+                email: user.email,
+                phone_number: user.phone,
+                password: user.password
+              })
+              if (response.status == 200){
+                alert('Успешная регистрация')
+              }
+              } catch (error){
+                console.log(error);
+              }
+            }
+          }
+        },
+        mounted() {
+          if (localStorage.token){
+            this.token = localStorage.token
           }
         },
     }
 </script>
 
 <style scoped>
+
 .about {
   height: 500px;
   margin: 50px 0 0 0;
+  overflow: hidden;
+  min-width: 1200px;
 }
 .about__background {
   background-image: url("@/resources/images/green_rectangle.svg");
   background-repeat: no-repeat;
+
   width: 100%;
   height: 100%;
     
@@ -241,18 +303,7 @@ import RegistrationDialog from '@/components/UI/RegistrationDialog.vue'
 .service_item__providers:hover {
   transform: translate(0, -10px);
 }
-.service__title {
-  text-align: center;
-  font-family: 'Inter';
-  font-style: normal;
-  font-weight: 400;
-  font-size: 60px;
-  line-height: 73px;
-  margin: 0 0 65px 0;
-  text-align: center;
 
-color: #3F4155;
-}
 .service_item_content__title {
   font-family: 'Inter';
   font-style: normal;
@@ -278,6 +329,18 @@ color: #3F4155;
 }
 .service_item__content {
   width: 63%;
+}
+.service__title {
+  text-align: center;
+  font-family: 'Inter';
+  font-style: normal;
+  font-weight: 400;
+  font-size: 60px;
+  line-height: 73px;
+  margin: 0 0 65px 0;
+  text-align: center;
+
+  color: #3F4155;
 }
 .service_item__providers {
   width: 490px;
@@ -367,9 +430,8 @@ color: #3F4155;
 }
 .footer {
   width: 1440px;
-  margin: 0 auto;
-  height: 100px;
-
+  margin: 10px auto;
+  position: relative;
 }
 .footer__title {
   font-family: 'Inter';
@@ -379,9 +441,13 @@ color: #3F4155;
 
   color: #5CB25D;
 }
+
 .footer__divider {
-    margin-top: 2px;
-    height: 1px;
-    background: gray;
+  position: absolute;
+  width: 1440px;
+  height: 3px;
+  border-bottom: 1px solid gray;
+  content: '';
 }
+
 </style>

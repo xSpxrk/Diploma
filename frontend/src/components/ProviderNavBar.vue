@@ -1,14 +1,12 @@
 <template>
     <div class="navbar">
         <div class="items">
-            <h1 class="icon">БСМ</h1>
+            <router-link class="icon" to="/main">БСМ</router-link>
             <div class="navbar__btns">
-            <a class="nav__link" href="#about">О нас</a>
-            <a class="nav__link" href="#service">Для кого</a>
-            <a class="nav__link" href="#customers">Заказчикам</a>
-            <a class="nav__link" href="#providers">Поставщикам</a>
-            <a class="nav__link" @click="openEntry">Вход</a>
-            <registration-button @click="openRegistration">Регистрация</registration-button>
+            <router-link class="nav__link" to="/offers">Мои предложения</router-link>
+            <router-link class="nav__link" to="/orders">Заказы</router-link>
+            <router-link class="nav__link" to="/profile">Профиль</router-link>
+            <a class="nav__link" @click="exit">Выход</a>
             </div>
         </div>
         <div class="divider"></div>
@@ -19,11 +17,10 @@
 <script>
     export default {
         methods: {
-            openRegistration() {
-                this.$emit('registration', true)
-            },
-            openEntry() {
-                this.$emit('entry', true)
+            exit() {
+                localStorage.token = ''
+                localStorage.type = ''
+                this.$router.push('/')
             }
         },
     }
@@ -45,6 +42,9 @@
     font-size: 40px;
     font-family: 'Roboto Slab', serif;
     font-weight: 400;
+    text-decoration: none;
+    cursor: default;
+
 }
 .divider {
     margin-top: 2px;
