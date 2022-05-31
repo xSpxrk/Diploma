@@ -33,7 +33,7 @@ import axios from 'axios'
         },
         methods: {
             async getProvider() {
-                const response = await axios.get('http://127.0.0.1:8000/users',
+                const response = await axios.get('https://bsm-backend.herokuapp.com/users',
                 {
                     params: {
                         token: localStorage.token,

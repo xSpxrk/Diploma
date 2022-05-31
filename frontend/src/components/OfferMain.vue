@@ -41,13 +41,13 @@ import axios from 'axios'
         },
         methods: {
             async getOrder() {
-                const response = await axios.get('http://127.0.0.1:8000/orders/' + this.offer.order_id);
+                const response = await axios.get('https://bsm-backend.herokuapp.com/orders/' + this.offer.order_id);
                 this.order = response.data;
                 return response.data
             },
             async getCustomer() {
                 const customer = await this.getOrder();
-                const response = await axios.get('http://127.0.0.1:8000/customers/' + customer.customer_id);
+                const response = await axios.get('https://bsm-backend.herokuapp.com/customers/' + customer.customer_id);
                 this.customer = response.data.name;
             }
 

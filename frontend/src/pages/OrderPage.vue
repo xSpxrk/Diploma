@@ -53,7 +53,7 @@ import axios from 'axios'
                 return parseInt(this.$route.params.id);
             },
             async getOrder(id) {
-                const response = await axios.get('http://127.0.0.1:8000/orders/' + id );
+                const response = await axios.get('https://bsm-backend.herokuapp.com/orders/' + id );
                 this.order = response.data;
                 this.offers = this.order.offers;
             },

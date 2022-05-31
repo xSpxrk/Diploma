@@ -46,7 +46,7 @@ import axios from 'axios'
         },
         methods: {
             async getOrders() {
-                const response = await axios.get('http://127.0.0.1:8000/customers/one', {
+                const response = await axios.get('https://bsm-backend.herokuapp.com/customers/one', {
                     headers: {
                         'Authorization': localStorage.token
                     }
@@ -55,7 +55,7 @@ import axios from 'axios'
                 console.log(response);
             },
             async getOffers() {
-                const response = await axios.get('http://127.0.0.1:8000/providers/one', {
+                const response = await axios.get('https://bsm-backend.herokuapp.com/providers/one', {
                     headers: {
                         'Authorization': localStorage.token
                     }

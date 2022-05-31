@@ -40,7 +40,7 @@ import axios from 'axios'
                 this.visible = true;
             },
              async create(order) {
-                const response = await axios.post('http://127.0.0.1:8000/orders/', {
+                const response = await axios.post('https://bsm-backend.herokuapp.com/orders/', {
                     name: order.name,
                     description: order.description,
                     materials: order.materials,

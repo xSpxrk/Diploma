@@ -37,7 +37,7 @@ import axios from 'axios'
         },
         methods: {
             async getProvider(provider_id) {
-                const response = await axios.get('http://127.0.0.1:8000/providers/' + provider_id);
+                const response = await axios.get('https://bsm-backend.herokuapp.com/providers/' + provider_id);
                 this.provider = response.data;
             }
         },

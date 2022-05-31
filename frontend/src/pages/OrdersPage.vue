@@ -35,7 +35,7 @@ import axios from 'axios'
         },
         methods: {
             async getOrders() {
-                const response = await axios.get('http://127.0.0.1:8000/orders/', {
+                const response = await axios.get('https://bsm-backend.herokuapp.com/orders/', {
                     params: {
                     skip: this.skip,
                     limit: this.limit,
@@ -48,7 +48,7 @@ import axios from 'axios'
                 this.limit += 1;
             },
             async getMax() {
-                const max = await axios.get('http://127.0.0.1:8000/orders/max/');
+                const max = await axios.get('https://bsm-backend.herokuapp.com/orders/max/');
                 this.maxOrders = max.data;
             }
             

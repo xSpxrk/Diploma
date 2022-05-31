@@ -35,14 +35,14 @@ import axios from 'axios'
         },
         methods: {
             async getCustomer() {
-                const response = await axios.get('http://127.0.0.1:8000/customers/' + this.order.customer_id);
+                const response = await axios.get('https://bsm-backend.herokuapp.com/customers/' + this.order.customer_id);
                 this.customer = response.data.name;
             },
             letOffer() {
                 this.$emit('openDialog', true)
             },
             async deleteOrder() {
-                const response = await axios.delete('http://127.0.0.1:8000/orders/'+ this.order.order_id);
+                const response = await axios.delete('https://bsm-backend.herokuapp.com/orders/'+ this.order.order_id);
             this.$router.back();
                 
             }

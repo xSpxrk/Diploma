@@ -44,7 +44,7 @@ import axios from 'axios'
         },
         methods: {
             async getUser() {
-                const response = await axios.get('http://127.0.0.1:8000/users/', {
+                const response = await axios.get('https://bsm-backend.herokuapp.com/users/', {
                     params: {
                         token: localStorage.token,
                     }
@@ -52,7 +52,7 @@ import axios from 'axios'
                 this.user = response.data;
             },
             async updateUser(){
-                const response = await axios.put('http://127.0.0.1:8000/users/', {
+                const response = await axios.put('https://bsm-backend.herokuapp.com/users/', {
                     name:  this.user.name,
                     email:  this.user.email,
                     phone_number:  this.user.phone_number,

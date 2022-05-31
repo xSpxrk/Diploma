@@ -142,7 +142,7 @@ import axios from 'axios'
         
           async loginUser(user) {
             try {
-              const response = await axios.post('http://127.0.0.1:8000/token',
+              const response = await axios.post('https://bsm-backend.herokuapp.com/token',
                 {  
                 username: user.username,
                 password: user.password,
@@ -160,7 +160,7 @@ import axios from 'axios'
           async registerUser(user) {
             if (user.type == 'Заказчик') {
               try{
-                const response = await axios.post('http://127.0.0.1:8000/customers', {
+                const response = await axios.post('https://bsm-backend.herokuapp.com/customers', {
                 name: user.name,
                 email: user.email,
                 phone_number: user.phone,
@@ -176,7 +176,7 @@ import axios from 'axios'
             }
             else {
               try{
-                const response = await axios.post('http://127.0.0.1:8000/providers', {
+                const response = await axios.post('https://bsm-backend.herokuapp.com/providers', {
                 name: user.name,
                 email: user.email,
                 phone_number: user.phone,
