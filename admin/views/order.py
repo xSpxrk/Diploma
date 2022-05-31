@@ -3,8 +3,8 @@ from typing import Any, cast
 
 from flask_admin.model import InlineFormAdmin
 
-from admin.views.offer import OfferInlineAdmin
-from backend.app.models import Order, Offer
+from .offer import OfferInlineAdmin
+from .models import Order, Offer
 from markupsafe import Markup
 
 

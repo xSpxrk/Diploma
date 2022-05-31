@@ -1,7 +1,7 @@
 from flask_admin.contrib.sqla import ModelView
 
-from admin.views.offer import OfferInlineAdmin
-from backend.app.models import Offer
+from .offer import OfferInlineAdmin
+from .models import Offer
 
 
 class ProviderView(ModelView):

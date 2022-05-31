@@ -3,7 +3,7 @@ from typing import Any, cast
 
 from flask_admin.model import InlineFormAdmin
 
-from backend.app.models import Offer
+from .models import Offer
 from markupsafe import Markup
 
 

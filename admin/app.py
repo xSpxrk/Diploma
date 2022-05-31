@@ -1,19 +1,42 @@
 from typing import cast
-from flask import Flask
+
+import flask
+from flask import Flask, render_template, request
 from flask_admin import Admin, AdminIndexView
 
-from backend.app.db.session import current_session
-from backend.app.models import Provider, Order, Offer, Customer
+from .db.session import current_session
+from admin.views.models import Provider, Order, Offer, Customer
+from flask_admin.form import form
 
 
 def create_app() -> Flask:
     app = Flask(__name__)
-
     app.config['FLASK_ADMIN_SWATCH'] = 'Cosmo'
     app.secret_key = 'secret_key'
 
+    @app.route('/', methods=['GET', 'POST'])
+    def login():
+        username = request.form.get('username')
+        password = request.form.get('password')
+        if username == 'admin' and password == 'admin':
+            return flask.redirect('/admin')
+        return '''
+        <form action="" method="post">
+        <p>
+	    <label for="username">Username</label>
+	    <input type="text" name="username">
+	</p>
+	<p>
+	    <label for="password">Password</label>
+	    <input type="password" name="password">
+	</p>
+	<p>
+	    <input type="submit">
+	</p>
+    </form>'''
+
     admin = Admin(app, name='Биржа строительных материалов',
-                  index_view=AdminIndexView(name='Главная страница', url='/'),
+                  index_view=AdminIndexView(name='Главная страница', url='/admin'),
                   template_mode='bootstrap4')
 
     from admin.views.provider import ProviderView
@@ -29,6 +52,6 @@ def create_app() -> Flask:
     return cast(Flask, admin.app)
 
 
-if __name__ == "__main__":
-    app = create_app()
-    app.run(host='0.0.0.0', port=5000, debug=True)
+app = create_app()
+
+app.run()

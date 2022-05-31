@@ -1,7 +1,7 @@
 from flask_admin.contrib.sqla import ModelView
 
-from admin.views.order import OrderInlineAdmin
-from backend.app.models import Order
+from .order import OrderInlineAdmin
+from .models import Order
 
 
 class CustomerView(ModelView):
